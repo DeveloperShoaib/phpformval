@@ -13,7 +13,7 @@ if(!$con){
 //delete
 if(isset($_GET['delete'])){
     $id = $_GET['delete'];
-    mysqli_query($con,"DELETE FROM userdatabase WHERE id='$id'");
+    mysqli_query($con,"delete from userdatabase  where id='$id'");
     header("Location: index.php");
     exit;
 }
@@ -29,7 +29,7 @@ function clean($val){
     return ($val); 
 }
 
-if(isset($_POST['save'])){
+if(isset($_POST['save']) ){
 
     $id = $_POST['edit_id'];  
 
@@ -93,32 +93,34 @@ if(isset($_POST['save'])){
     /* if errors → stop and go back to form */
     if(!empty($errors)){
         $_SESSION['errors'] = $errors;
-        $_SESSION['old'] = $_POST;
+        $_SESSION['old'] = $_POST; //first time dala huva galat  data which is wrong ye store hoga dobara dikane ke liye 
         header("Location: form.php");
         exit;
     }
 
     //image upload
-    $old_img = $_POST['old_image'];
-    $file_name = $_FILES['image']['name'];
+    $old_img = $_POST['old_image'];//v user ki purani files aayegi 
+    $file_name = $_FILES['image']['name']; // new file upload hone ke liye
 
     if($file_name != ""){
         $folder = "uploadimage/".$file_name;
-        move_uploaded_file($_FILES['image']['tmp_name'],$folder);
+        $temp_name = $_FILES['image']['tmp_name'];
+        move_uploaded_file($temp_name,$folder);
+         
     } else {
-        $folder = $old_img; // keep old image
+        $folder = $old_img; // old image
     }
 
      
     if($id==""){ 
-        // insert
+        // insert ho tahi jab add se form.php se ata hai tab kyuki vaha id nahi hai action me php.form ka path diya huva hai or first time form bharte time bhi yahi query chalegi kyoki vaha id nahi hoti
         $q = "insert into userdatabase (name,picstore,surname,dob,email,
         password,address,website,comment,phone,gender
         )values('$name','$folder','$surname','$dob','$email',
         '$password','$address','$website','$comment','$phone','$gender')";
     }
     else {
-        // update
+        // update 
         $q = "update userdatabase set 
         name='$name', picstore='$folder', surname='$surname', dob='$dob',
         email='$email', password='$password', address='$address', website='$website',

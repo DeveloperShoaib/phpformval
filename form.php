@@ -8,12 +8,89 @@ $address = $website = $comment = $phone = $gender = "";
 $old_image = "";
 $id = "";
 
-// if update button cliked 
+
+
+if(isset($_SESSION['edit_id'])){
+    $edit_id = $_SESSION['edit_id'];
+} else {
+    $edit_id = "";
+}
+
+
+if(isset($_SESSION['old'])){
+    $name = $_SESSION['old']['name'];
+}else{
+    $name = "";
+}
+if(isset($_SESSION['old'])){
+    $surname = $_SESSION['old']['surname'];
+}else{
+    $name = "";
+}
+if(isset($_SESSION['old'])){
+    $dob = $_SESSION['old']['dob'];
+}else{
+    $dob = "";
+}
+if(isset($_SESSION['old'])){
+    $email = $_SESSION['old']['email'];
+}else{
+    $email = "";
+}
+if(isset($_SESSION['old'])){
+    $password = $_SESSION['old']['password'];
+}else{
+    $password = "";
+}
+if(isset($_SESSION['old'])){
+    $address = $_SESSION['old']['address'];
+}else{
+    $address = "";
+}
+
+if(isset($_SESSION['old'])){
+    $website = $_SESSION['old']['website'];
+}else{
+    $website = "";
+}
+
+if(isset($_SESSION['old'])){
+    $comment = $_SESSION['old']['comment'];
+}else{
+    $comment = "";
+}
+if(isset($_SESSION['old'])){
+    $phone = $_SESSION['old']['phone'];
+}else{
+    $phone = "";
+}
+if(isset($_SESSION['old'])){
+    $gender = $_SESSION['old']['gender'];
+}else{
+    $gender = "";
+}       
+
+
+// for validation errors
+ 
+if (isset($_SESSION['errors'])) {
+    $errors = $_SESSION['errors'];
+} else {
+    $errors = [];
+}
+if (isset($_SESSION['old'])) {
+    $old = $_SESSION['old'];
+} else {
+    $old = [];
+}
+
 if(isset($_POST['update_id'])){
 
     $id = $_POST['update_id'];
 
-    $_SESSION['edit_id'] = $id;  // store in session
+    $_SESSION['edit_id'] = $id; 
+
+
 
     $q = mysqli_query($con,"SELECT * FROM userdatabase WHERE id='$id'");
     $data = mysqli_fetch_assoc($q);
@@ -31,28 +108,9 @@ if(isset($_POST['update_id'])){
     $old_image = $data['picstore'];
 }
 
-/* For validation errors */
-$errors = $_SESSION['errors'] ?? [];    
-
-// if (isset($_SESSION['errors'])) {
-//     $errors = $_SESSION['errors'];
-// } else {
-//     $errors = [];
-// }
-
-
-$old = $_SESSION['old'] ?? [];
-
-
-// if (isset($_SESSION['old'])) {
-//     $old = $_SESSION['old'];
-// } else {
-//     $old = [];
-// }
-
-
 unset($_SESSION['errors']);
 unset($_SESSION['old']);
+
 ?>
 
 <!DOCTYPE html>
@@ -65,55 +123,55 @@ unset($_SESSION['old']);
 
 <form action="helper.php" method="post" enctype="multipart/form-data">
 
-    <input type="hidden" name="edit_id" value="<?= $_SESSION['edit_id'] ?? "" ?>">
+    <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>">
     
     <input type="hidden" name="old_image" value="<?= $old_image ?>">
 
     Name:  
-    <input type="text" name="name" value="<?= $old['name'] ?? $name ?>">
+    <input type="text" name="name" value="<?php echo $name;?>">
     <span class="error"><?= $errors['name'] ?? '' ?></span>
     <br><br>
 
     Surname:  
-    <input type="text" name="surname" value="<?= $old['surname'] ?? $surname ?>">
+    <input type="text" name="surname" value="<?php echo $surname;?>">
     <span class="error"><?= $errors['surname'] ?? '' ?></span>
     <br><br>
 
 DOB:  
-<input type="date" name="dob" value="<?= $old['dob'] ?? $dob ?>">
+<input type="date" name="dob" value="<?php echo $dob; ?>">
 <br><br>
 
 Email:  
-<input type="text" name="email" value="<?= $old['email'] ?? $email ?>">
+<input type="text" name="email" value="<?php echo $email; ?>">
 <span class="error"><?= $errors['email'] ?? '' ?></span>
 <br><br>
 
 Password:  
-<input type="text" name="password" value="<?= $old['password'] ?? $password ?>">
+<input type="text" name="password" value="<?php echo $password; ?>">
 <span class="error"><?= $errors['password'] ?? '' ?></span>
 <br><br>
 
 Address:  
-<textarea name="address"><?= $old['address'] ?? $address ?></textarea>
+<textarea name="address"><?php echo $address; ?></textarea>
 <br><br>
 
 Website:  
-<input type="text" name="website" value="<?= $old['website'] ?? $website ?>">
+<input type="text" name="website" value="<?php echo $website; ?>">
 <br><br>
 
 Comment:  
-<textarea name="comment"><?= $old['comment'] ?? $comment ?></textarea>
+<textarea name="comment"><?php echo $comment; ?></textarea>
 <br><br>
 
 Phone:  
-<input type="text" name="phone" value="<?= $old['phone'] ?? $phone ?>">
+<input type="text" name="phone" value="<?php echo $phone; ?>">
 <span class="error"><?= $errors['phone'] ?? '' ?></span>
 <br><br>
 
 Gender:
-<input type="radio" name="gender" value="male"   <?= ($gender=="male")?"checked":"" ?>> Male
-<input type="radio" name="gender" value="female" <?= ($gender=="female")?"checked":"" ?>> Female
-<input type="radio" name="gender" value="other"  <?= ($gender=="other")?"checked":"" ?>> Other
+<input type="radio" name="gender" value="male"   <?php echo ($gender=="male")?"checked":"" ?>> Male
+<input type="radio" name="gender" value="female" <?php echo ($gender=="female")?"checked":"" ?>> Female
+<input type="radio" name="gender" value="other"  <?php echo ($gender=="other")?"checked":"" ?>> Other
 <span class="error"><?= $errors['gender'] ?? '' ?></span>
 <br><br>
 
